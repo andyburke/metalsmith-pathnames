@@ -19,7 +19,8 @@ Metalsmith( __dirname )
     .use( pathnames( {
         pattern: '**/*.html', // default file pattern to add path/filename to
         index: '**/index.html', // default index name to strip,
-        base: '' // default base directory
+        base: '' // default base directory,
+        replacements: [] // default replacements to perform on path
     } ) )
     .build( error => {
         if ( error ) {
@@ -36,7 +37,8 @@ Metalsmith( __dirname )
     "metalsmith-pathnames": {
         "pattern": "**/*.html",
         "index": "**/index.html",
-        "base": ""
+        "base": "",
+        "replacements": []
     }
   }
 }
@@ -47,6 +49,7 @@ Metalsmith( __dirname )
 - `pattern` is the file glob to match for files to add path/filename
 - `index` is the file glob mathing your index to be stripped from the path
 - `base` is an optional base directory to add
+- `replacements` is an optional array of RegExp/replacement pairs
 
 ## License
 

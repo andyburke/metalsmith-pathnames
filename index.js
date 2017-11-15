@@ -10,14 +10,27 @@ module.exports = function( _options ) {
     const options = extend( {
         pattern: '**/*.html',
         index: '**/index.html',
-        base: ''
+        base: '',
+        replacements: []
     }, _options );
 
     return ( files, metalsmith, done ) => {
+        const replacements = options.replacements.map( replacement => {
+            return [ new RegExp( replacement[ 0 ] ), replacement[ 1 ] ];
+        } );
+
         Object.keys( files ).filter( filename => match( filename, options.pattern ) ).forEach( filename => {
             const file = files[ filename ];
-            file.path = `${ options.base}${ match( filename, options.index ) ? path.dirname( filename ) : filename }`;
             file.filename = path.basename( filename );
+            file.path = match( filename, options.index ) ? path.dirname( filename ) : filename;
+
+            replacements.forEach( replacement => {
+                file.path = file.path.replace( replacement[ 0 ], replacement[ 1 ] );
+            } );
+
+            if ( options.base.length ) {
+                file.path = options.base.length + file.path;
+            }
         } );
 
         done();
